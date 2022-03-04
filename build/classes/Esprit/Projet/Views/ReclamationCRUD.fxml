@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" styleClass="parent" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Esprit.Projet.Controllers.ReclamationCRUDController">
+     <children>
+      <VBox layoutX="17.0" layoutY="41.0" prefHeight="437.0" prefWidth="125.0" spacing="41.0">
+         <children>
+            <Label text="ID_Reclamation">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Type_Reclamation">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Date_Reclamation">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Description_Reclamation">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="174.0" text="Etat">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="140.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="145.0" layoutY="39.0" prefHeight="427.0" prefWidth="215.0" spacing="23.0">
+         <children>
+            <TextField fx:id="tfid" prefHeight="32.0" prefWidth="215.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tftypereclamation" layoutX="10.0" layoutY="10.0" prefHeight="32.0" prefWidth="215.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <DatePicker fx:id="tfdatereclamation" layoutX="10.0" layoutY="90.0" prefHeight="31.0" prefWidth="215.0" />
+            <TextArea fx:id="tfdescriptionreclamation" prefHeight="18.0" prefWidth="215.0" />
+            <HBox prefHeight="33.0" prefWidth="215.0">
+               <children>
+                  <SplitMenuButton fx:id="tfetatreclamation" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" styleClass="blue-btn" text="SplitMenuButton">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                  </SplitMenuButton>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TableView fx:id="tvoffre" layoutX="387.0" layoutY="38.0" prefHeight="359.0" prefWidth="619.0">
+        <columns>
+          <TableColumn fx:id="coltypereclamation" prefWidth="114.0" text="Type_Reclamation" />
+            <TableColumn fx:id="coldatedreclamation" minWidth="9.0" prefWidth="128.0" text="Date_Reclamation" />
+            <TableColumn fx:id="coldescriptionreclamation" prefWidth="151.0" text="Description_Reclamation" />
+            <TableColumn fx:id="coletatreclamation" maxWidth="264.0" prefWidth="69.0" text="Etat" />
+            <TableColumn fx:id="colajsu" prefWidth="156.0" text="Modifier ou Supprimer" />
+        </columns>
+      </TableView>
+      <Button fx:id="btninserrer" layoutX="136.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="67.0" styleClass="blue-btn" text="Inserrer" />
+      <Button fx:id="btnmodifier" layoutX="208.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="72.0" styleClass="blue-btn" text="Modifier" />
+      <Button fx:id="btnsupprimer" layoutX="286.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="76.0" styleClass="blue-btn" text="Supprimer" />
+      <Label fx:id="Message" layoutX="456.0" layoutY="437.0" prefHeight="17.0" prefWidth="327.0">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+      <Button fx:id="tfconsuleroffre" layoutX="541.0" layoutY="491.0" mnemonicParsing="false" styleClass="blue-btn" text="Consulter_Offre" />
+   </children>
+</AnchorPane>
