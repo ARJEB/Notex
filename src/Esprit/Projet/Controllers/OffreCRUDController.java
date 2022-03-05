@@ -13,6 +13,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -23,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -35,9 +37,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -48,10 +53,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 /**
  *
@@ -60,7 +70,6 @@ import javafx.util.Callback;
 public class OffreCRUDController implements Initializable {
     
     private Label label;
-    @FXML
     private TextField tfid;
     @FXML
     private TextField tfnom;
@@ -86,7 +95,6 @@ public class OffreCRUDController implements Initializable {
     private Button btninserrer;
     @FXML
     private Button btnmodifier;
-    @FXML
     private Button btnsupprimer;
     @FXML
     private TextField tfimg;
@@ -109,6 +117,12 @@ public class OffreCRUDController implements Initializable {
     int idof ;
     @FXML
     private TableColumn<Offre, String> editCol;
+    @FXML
+    private ImageView excel;
+    @FXML
+    private Button btexcel ;
+    
+    private FileInputStream fis;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -150,7 +164,53 @@ public class OffreCRUDController implements Initializable {
     
     public void initialize(URL url, ResourceBundle rb) {
        
+        btexcel = new Button("Exporter une fichier excel");
         
+        btexcel.setOnAction( e->{
+           try {
+               String requete ="select * from offre";
+               ResultSet rs;
+               try (Statement st = cnxs.prepareStatement(requete)) {
+                   rs = st.executeQuery(requete);
+                   XSSFWorkbook wb = new XSSFWorkbook();
+                   XSSFSheet sheet = wb.createSheet("Offre information");
+                   XSSFRow header = sheet.createRow(0);
+                   header.createCell(1).setCellValue("ID Offre");
+                   header.createCell(2).setCellValue("Nom Offre");
+                   header.createCell(3).setCellValue("Date Debut Offre");
+                   header.createCell(4).setCellValue("Date Fin Offre");
+                   header.createCell(5).setCellValue("Description");
+                   header.createCell(6).setCellValue("Image");
+                   int index = 1;
+                   while (rs.next()) {
+                       XSSFRow row = sheet.createRow(index);
+                       row.createCell(0).setCellValue(rs.getString("id"));
+                       row.createCell(1).setCellValue(rs.getString("nomoffre"));
+                       row.createCell(2).setCellValue(rs.getString("datedebut"));
+                       row.createCell(3).setCellValue(rs.getString("datefin"));
+                       row.createCell(4).setCellValue(rs.getString("description"));
+                       row.createCell(5).setCellValue(rs.getString("imgsrc"));
+                       index++;
+                   }
+                   try (FileOutputStream fileout = new  FileOutputStream("Offreinformation.xlsx")) {
+                       wb.write(fileout);
+                   }
+                   Alert alert = new Alert(AlertType.INFORMATION);
+                   alert.setTitle("information");
+                   alert.setHeaderText(null);
+                   alert.setContentText("Le Fichier a ete exporter avec succes");
+                   alert.showAndWait();
+               }
+                 rs.close();
+           } catch(SQLException ex){
+               Logger.getLogger(TableViewController.class.getName()).log(Level.SEVERE, null, ex);
+               
+           } catch (FileNotFoundException ex) {
+                Logger.getLogger(OffreCRUDController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(OffreCRUDController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         
         tfconsuleroffre.setOnAction(event->{
             try {
@@ -216,7 +276,7 @@ public void afficherOffre(){
     colimg.setCellValueFactory(new PropertyValueFactory<Offre,String>("imgsrc"));
     colcouleur.setCellValueFactory(new PropertyValueFactory<Offre,String>("couleur"));
     
-//    ================================ 
+//    ================================ bouton modifier et supprimer
     //add cell of button edit 
          Callback<TableColumn<Offre, String>, TableCell<Offre, String>> cellFoctory = (TableColumn<Offre, String> param) -> {
             // make cell containing buttons
@@ -345,5 +405,13 @@ void setTextField(int id, String nomoffre, LocalDate datedebut,LocalDate datefin
         tfcouleur.setText(couleur);
 
     }
+
+
+
+
+
+
+
+
 
 }

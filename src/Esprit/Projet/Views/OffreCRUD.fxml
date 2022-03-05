@@ -8,21 +8,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" styleClass="parent" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Esprit.Projet.Controllers.OffreCRUDController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #2596be;" styleClass="parent" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Esprit.Projet.Controllers.OffreCRUDController">
    <children>
       <VBox layoutX="17.0" layoutY="41.0" prefHeight="437.0" prefWidth="125.0" spacing="20.0">
          <children>
-            <Label text="ID_Offre">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
             <Label text="Nom_Offre">
                <font>
                   <Font size="15.0" />
@@ -63,11 +59,6 @@
       </VBox>
       <VBox layoutX="145.0" layoutY="39.0" prefHeight="427.0" prefWidth="215.0" spacing="10.0">
          <children>
-            <TextField fx:id="tfid">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
             <TextField fx:id="tfnom">
                <font>
                   <Font size="14.0" />
@@ -100,23 +91,29 @@
       </VBox>
       <TableView fx:id="tvoffre" layoutX="387.0" layoutY="38.0" prefHeight="359.0" prefWidth="619.0">
         <columns>
-          <TableColumn fx:id="colid" prefWidth="30.0" text="ID_Offre" />
-          <TableColumn fx:id="colnom" prefWidth="53.0" text="Nom_Offre" />
+          <TableColumn fx:id="colid" minWidth="0.0" prefWidth="0.0" text="ID_Offre" />
+          <TableColumn fx:id="colnom" prefWidth="83.0" text="Nom_Offre" />
             <TableColumn fx:id="coldated" prefWidth="70.0" text="Date_Debut_Offre" />
             <TableColumn fx:id="coldatef" minWidth="0.0" prefWidth="91.0" text="Date_Fin_Offre" />
             <TableColumn fx:id="coldescription" prefWidth="102.0" text="Description" />
-            <TableColumn fx:id="colimg" maxWidth="264.0" prefWidth="159.0" text="Image" />
-            <TableColumn fx:id="colcouleur" prefWidth="113.0" text="Couleur" />
+            <TableColumn fx:id="colimg" maxWidth="264.0" prefWidth="110.0" text="Image" />
+            <TableColumn fx:id="colcouleur" prefWidth="65.0" text="Couleur" />
+            <TableColumn fx:id="editCol" prefWidth="144.0" text="Editer" />
         </columns>
       </TableView>
       <Button fx:id="btninserrer" layoutX="136.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="67.0" styleClass="blue-btn" text="Inserrer" />
       <Button fx:id="btnmodifier" layoutX="208.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="72.0" styleClass="blue-btn" text="Modifier" />
-      <Button fx:id="btnsupprimer" layoutX="286.0" layoutY="491.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="76.0" styleClass="blue-btn" text="Supprimer" />
       <Label fx:id="Message" layoutX="456.0" layoutY="437.0" prefHeight="17.0" prefWidth="327.0">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
       <Button fx:id="tfconsuleroffre" layoutX="541.0" layoutY="491.0" mnemonicParsing="false" styleClass="blue-btn" text="Consulter_Offre" />
+      <ImageView fx:id="excel" layoutX="294.0" layoutY="536.0">
+         <image>
+            <Image url="@../../../../../../../AppData/Local/Temp/icons8_microsoft_excel_50px.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btexcel" layoutX="293.0" layoutY="491.0" mnemonicParsing="false" text="Button" />
    </children>
 </AnchorPane>

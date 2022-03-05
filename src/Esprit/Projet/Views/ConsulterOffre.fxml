@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,15 +18,48 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Esprit.Projet.Controllers.ConsulterOffreController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="980.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Esprit.Projet.Controllers.ConsulterOffreController">
    <children>
       <BorderPane layoutX="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <VBox prefHeight="200.0" prefWidth="435.0" styleClass="right-bar" stylesheets="@../values/style.css" BorderPane.alignment="CENTER">
+            <VBox prefHeight="600.0" prefWidth="359.0" styleClass="right-bar" stylesheets="@../values/style.css" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" prefHeight="110.0" prefWidth="200.0" styleClass="pane" />
-                  <Pane prefHeight="57.0" prefWidth="435.0" styleClass="pane" VBox.vgrow="ALWAYS" />
-                  <VBox fx:id="chosenOffreCard" alignment="CENTER" prefHeight="535.0" prefWidth="100.0" stylesheets="@style.css">
+                  <HBox alignment="CENTER" prefHeight="16.0" prefWidth="385.0">
+                     <children>
+                        <Label prefHeight="49.0" prefWidth="128.0" text="Notex" textFill="WHITE">
+                           <font>
+                              <Font name="Cambria Bold" size="40.0" />
+                           </font>
+                        </Label>
+                        <Label text="Offre" textFill="WHITE">
+                           <font>
+                              <Font name="Cambria" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="78.0" prefWidth="325.0" stylesheets="@../values/style.css" VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <TextField fx:id="Recherche" prefHeight="40.0" prefWidth="235.0" promptText="Type here to search" styleClass="transparent" stylesheets="@../values/style.css">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Cambria" size="18.0" />
+                           </font>
+                        </TextField>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="search-button" stylesheets="@../values/style.css" text="Search" textFill="WHITE" />
+                     </children>
+                     <styleClass>
+                        <String fx:value="search-box" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                  </HBox>
+                  <Pane prefHeight="57.0" prefWidth="435.0" VBox.vgrow="ALWAYS" />
+                  <VBox fx:id="chosenOffreCard" alignment="CENTER" prefHeight="535.0" prefWidth="100.0" stylesheets="@../values/style.css">
                      <VBox.margin>
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
@@ -94,7 +128,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="252.0" prefWidth="329.0">
                            <children>
-                              <Label fx:id="Description" alignment="CENTER" contentDisplay="CENTER" prefHeight="215.0" prefWidth="326.0" text="Desccription" textFill="WHITE">
+                              <Label fx:id="Description" alignment="CENTER" contentDisplay="CENTER" prefHeight="201.0" prefWidth="277.0" text="Desccription" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="24.0" />
                                  </font>
@@ -128,7 +162,29 @@
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
                      <children>
-                        <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS" />
+                        <Pane prefHeight="65.0" prefWidth="393.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="btnCRUDOFFRE" layoutX="155.0" layoutY="12.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="133.0" text="Mes offres">
+                                 <font>
+                                    <Font size="27.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnHome" alignment="CENTER" layoutY="12.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="130.0" text="Home">
+                                 <font>
+                                    <Font size="27.0" />
+                                 </font>
+                              </Button>
+                              <ImageView fitHeight="27.0" fitWidth="29.0" layoutX="6.0" layoutY="20.0">
+                                 <image>
+                                    <Image url="@../../../../../../../AppData/Local/Temp/icons8_home_50px.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="27.0" fitWidth="29.0" layoutX="157.0" layoutY="20.0">
+                                 <image>
+                                    <Image url="@../../../../../../../AppData/Local/Temp/icons8_recent_actors_50px.png" />
+                                 </image>
+                              </ImageView>
+                           </children></Pane>
                         <Label prefHeight="62.0" prefWidth="100.0" text="My Account" textFill="#878787">
                            <font>
                               <Font name="Cambria" size="18.0" />
@@ -143,22 +199,11 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Pane prefHeight="84.0" prefWidth="96.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Button fx:id="btnCRUDOFFRE" layoutX="240.0" layoutY="11.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="149.0" styleClass="blue-btn" text="Offre">
-                                 <font>
-                                    <Font size="27.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="btnCRUDreclamation" alignment="CENTER" layoutX="21.0" layoutY="11.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="193.0" styleClass="blue-btn" text="Reclamation">
-                                 <font>
-                                    <Font size="27.0" />
-                                 </font>
-                              </Button>
-                           </children></Pane>
+                        <Pane prefHeight="84.0" prefWidth="96.0" />
+                        <Pane prefHeight="84.0" prefWidth="96.0" />
                      </children>
                      <VBox.margin>
-                        <Insets left="80.0" right="30.0" top="10.0" />
+                        <Insets left="20.0" right="20.0" top="10.0" />
                      </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

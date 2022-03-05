@@ -13,7 +13,7 @@
 }
 
 .right-bar{
-    -fx-background-color: #D3D3D3;
+    -fx-background-color: #2596be;
 }
 
 .shadow{
@@ -21,7 +21,7 @@
 }
 
 .chosen-fruit-card{
-    -fx-background-color:linear-gradient(#F16C31 20% ,#ffffff);
+    -fx-background-color: #F16C31;
     -fx-background-radius: 30;
 }
 
@@ -46,15 +46,6 @@
 }
 
 .Offre-item{
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #2596be;
         -fx-background-radius: 30;
 }  
-.blue-btn{
-    -fx-background-color: #2196f3;
-    -fx-background-radius: 5px;
-    -fx-text-fill: #ffffff;
-}
-.parent{
-     -fx-background-color:linear-gradient(#2196f3 20% ,#ffffff);
-    -fx-background-radius: 30;
-}

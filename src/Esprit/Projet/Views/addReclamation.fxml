@@ -27,10 +27,10 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type_Reclamation" wrappingWidth="102.13671875">
                <font>
-                  <Font name="Century Gothic" size="21.0" />
+                  <Font name="Century Gothic" size="15.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="typeFld" prefHeight="25.0" prefWidth="358.0">
+            <JFXTextField fx:id="typeFld" prefHeight="25.0" prefWidth="320.0">
                <font>
                   <Font name="Century Gothic" size="20.0" />
                </font>
@@ -44,7 +44,7 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date_Reclamation" wrappingWidth="102.13671875">
                <font>
-                  <Font name="Century Gothic" size="21.0" />
+                  <Font name="Century Gothic" size="15.0" />
                </font>
             </Text>
             <JFXDatePicker fx:id="dateFld" prefHeight="25.0" prefWidth="281.0" />
@@ -57,12 +57,12 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="102.13671875">
                <font>
-                  <Font name="Century Gothic" size="21.0" />
+                  <Font name="Century Gothic" size="15.0" />
                </font>
             </Text>
             <JFXTextField fx:id="descriptionFld" prefHeight="25.0" prefWidth="358.0">
                <font>
-                  <Font name="Century Gothic" size="20.0" />
+                  <Font name="Century Gothic" size="15.0" />
                </font>
             </JFXTextField>
          </children>
@@ -74,12 +74,12 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Etat" wrappingWidth="102.13671875">
                <font>
-                  <Font name="Century Gothic" size="21.0" />
+                  <Font name="Century Gothic" size="18.0" />
                </font>
             </Text>
             <JFXTextField fx:id="etatFld" prefHeight="25.0" prefWidth="358.0">
                <font>
-                  <Font name="Century Gothic" size="20.0" />
+                  <Font name="Century Gothic" size="15.0" />
                </font>
             </JFXTextField>
          </children>

@@ -65,14 +65,16 @@ public class ConsulterOffreController implements Initializable {
     private Label datedebut;
      @FXML
     private Label Description;
-     @FXML
-    private Button btnCRUDreclamation;
+    
 
       Connection cnxs;
     @FXML
     private Label datefin;
+    
     @FXML
-    private ScrollPane scroll;
+    private TextField Recherche;
+    @FXML
+    private Button btnHome;
     public ConsulterOffreController() {
         cnxs = MaConnexion.getInstance().getCnx();
     }
@@ -99,9 +101,9 @@ public class ConsulterOffreController implements Initializable {
                 System.out.println("err");
             }
         });
-        btnCRUDreclamation.setOnAction(event->{
+        btnHome.setOnAction(event->{
             try {
-                Parent page1 = FXMLLoader.load(getClass().getResource("/Esprit/Projet/Views/tableView.fxml"));
+                Parent page1 = FXMLLoader.load(getClass().getResource("/Esprit/Projet/Views/Home.fxml"));
                 Scene scene = new Scene(page1);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
