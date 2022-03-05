@@ -5,8 +5,11 @@
  */
 package Esprit.Projet.Controllers;
 
+import Esprit.Projet.Connexion.DbConnect;
 import Esprit.Projet.Connexion.MaConnexion;
 import Esprit.Projet.Entities.Offre;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,19 +21,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -38,8 +46,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 /**
  *
@@ -92,6 +104,11 @@ public class OffreCRUDController implements Initializable {
     private ImageView imageSer;
     @FXML
     private Button upload;
+    
+    Offre offretable =null;
+    int idof ;
+    @FXML
+    private TableColumn<Offre, String> editCol;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -199,9 +216,77 @@ public void afficherOffre(){
     colimg.setCellValueFactory(new PropertyValueFactory<Offre,String>("imgsrc"));
     colcouleur.setCellValueFactory(new PropertyValueFactory<Offre,String>("couleur"));
     
-    
-    
-    tvoffre.setItems(list);
+//    ================================ 
+    //add cell of button edit 
+         Callback<TableColumn<Offre, String>, TableCell<Offre, String>> cellFoctory = (TableColumn<Offre, String> param) -> {
+            // make cell containing buttons
+            final TableCell<Offre, String> cell = new TableCell<Offre, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    //that cell created only on non-empty rows
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+
+                    } else {
+
+                        FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                        FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE);
+
+                        deleteIcon.setStyle(
+                                " -fx-cursor: hand ;"
+                                + "-glyph-size:28px;"
+                                + "-fx-fill:#ff1744;"
+                        );
+                        editIcon.setStyle(
+                                " -fx-cursor: hand ;"
+                                + "-glyph-size:28px;"
+                                + "-fx-fill:#00E676;"
+                        );
+                        deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+                            try {
+                                offretable = tvoffre.getSelectionModel().getSelectedItem();
+                                String requete = "DELETE FROM OFFRE WHERE id = "+offretable.getId()+"";
+                                PreparedStatement pst = cnxs.prepareStatement(requete);
+                                pst.executeUpdate();
+                                afficherOffre();
+                                
+                            } catch (SQLException ex) {
+                                Logger.getLogger(TableViewController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                           
+
+                          
+
+                        });
+                            
+                         
+                        editIcon.setOnMouseClicked((MouseEvent event) -> {
+                            offretable = tvoffre.getSelectionModel().getSelectedItem();
+                            setTextField(offretable.getId(),offretable.getNomoffre()
+                                    ,offretable.getDatedebut().toLocalDate(),offretable.getDatefin().toLocalDate(),offretable.getDescription(), offretable.getImgsrc(), offretable.getCouleur());
+                            });
+
+                        HBox managebtn = new HBox(editIcon, deleteIcon);
+                        managebtn.setStyle("-fx-alignment:center");
+                        HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+                        HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
+
+                        setGraphic(managebtn);
+
+                        setText(null);
+
+                    }
+                }
+
+            };
+
+            return cell;
+        };
+         editCol.setCellFactory(cellFoctory);
+         tvoffre.setItems(list);
 
 }
 
@@ -223,7 +308,7 @@ public void ajouterOffre(){
         try {
             String requete = "UPDATE OFFRE SET nomoffre = '"+tfnom.getText()+ "',datedebut ='" 
                     + String.valueOf(tfdated.getValue()) + "',datefin ='" +String.valueOf(tfdatef.getValue())+  "',description ='"+tfdescription.getText()+"',imgsrc ='"+tfimg.getText()+"',couleur ='" 
-                    +tfcouleur.getText()+ "'WHERE id =" + tfid.getText()+"";
+                    +tfcouleur.getText()+ "'WHERE id =" + offretable.getId()+"";
         PreparedStatement pst = cnxs.prepareStatement(requete);
           pst.executeUpdate();
             System.out.println("votre offre est modifier avec succees ");
@@ -248,6 +333,17 @@ public void ajouterOffre(){
 
 
 
+void setTextField(int id, String nomoffre, LocalDate datedebut,LocalDate datefin, String description, String image,String couleur) {
 
+        idof = id;
+        tfnom.setText(nomoffre);
+        tfdated.setValue(datedebut);
+        tfdatef.setValue(datefin);
+        tfdescription.setText(description);
+        tfimg.setText(image);
+        
+        tfcouleur.setText(couleur);
+
+    }
 
 }
