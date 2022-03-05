@@ -195,7 +195,7 @@ public class TableViewController implements Initializable {
                             
                             reclamation = reclamationTABLE.getSelectionModel().getSelectedItem();
                             FXMLLoader loader = new FXMLLoader ();
-                            loader.setLocation(getClass().getResource("/tableView/addReclamation.fxml"));
+                            loader.setLocation(getClass().getResource("/Esprit/Projet/Views/addReclamation.fxml"));
                             try {
                                 loader.load();
                             } catch (IOException ex) {
