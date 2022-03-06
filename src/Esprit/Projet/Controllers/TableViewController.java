@@ -6,6 +6,7 @@
 package Esprit.Projet.Controllers;
 
 import Esprit.Projet.Connexion.DbConnect;
+import Esprit.Projet.Connexion.MaConnexion;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
@@ -37,6 +38,21 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import Esprit.Projet.Entities.Reclamation;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.sql.Statement;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -78,7 +94,11 @@ public class TableViewController implements Initializable {
     }    
     
     
-    
+    Connection cnxs;
+    public TableViewController() {
+        cnxs = MaConnexion.getInstance().getCnx();
+        
+    }
 
     @FXML
     private void close(MouseEvent event) {
@@ -130,9 +150,7 @@ public class TableViewController implements Initializable {
         
     }
 
-    @FXML
-    private void print(MouseEvent event) {
-    }
+    
 
     private void loadDate() {
         
@@ -238,5 +256,177 @@ public class TableViewController implements Initializable {
          
          
     }
+       @FXML
+    public void retour(MouseEvent event) {
+        try {
+                Parent page1 = FXMLLoader.load(getClass().getResource("/Esprit/Projet/Views/Home.fxml"));
+                Scene scene = new Scene(page1);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("err");
+            }
     
+    
+   }
+
+    
+
+
+
+
+
+
+
+@FXML
+    public void print(MouseEvent event) throws SQLException, FileNotFoundException, IOException {    
+
+        try {
+       com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+       PdfWriter.getInstance(doc,new FileOutputStream("C:\\Users\\ahmed\\OneDrive\\Desktop\\Reclamation.pdf"));  
+       doc.open();
+       
+    doc.add(new Paragraph(" "));
+       
+       Paragraph p = new Paragraph("liste des Reclamation  ");
+       p.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       doc.add(p);
+       doc.add(new Paragraph(" "));
+       doc.add(new Paragraph(" "));
+
+       PdfPTable tabpdf = new PdfPTable(5);
+       tabpdf.setWidthPercentage(100);
+       
+       PdfPCell cell;
+       cell = new PdfPCell(new Phrase("Id"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       cell = new PdfPCell(new Phrase("Type_Reclamation"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       cell = new PdfPCell(new Phrase("Date_Reclamation"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       cell = new PdfPCell(new Phrase("Description"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       cell = new PdfPCell(new Phrase("Etat_Reclamation"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       
+       
+       String requete = "SELECT * FROM reclamation";
+       Statement st = cnxs.createStatement();
+       ResultSet rs = st.executeQuery(requete);
+          
+      while (rs.next()) {
+           cell = new PdfPCell(new Phrase(rs.getString("id")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           
+           cell = new PdfPCell(new Phrase(rs.getString("typereclamation")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           cell = new PdfPCell(new Phrase(rs.getString("datereclamation")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           cell = new PdfPCell(new Phrase(rs.getString("description")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           cell = new PdfPCell(new Phrase(rs.getString("etat")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           
+       }
+     
+   
+          doc.add(tabpdf);
+          JOptionPane.showMessageDialog(null, "Votre fichier a ete exporter avec succes");
+          doc.close();
+          Desktop.getDesktop().open(new File("C:\\Users\\ahmed\\OneDrive\\Desktop\\Reclamation.pdf"));
+       }
+ 
+        catch (DocumentException | HeadlessException e) {
+            System.out.println("ERROR PDF");
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            System.out.println(e.getMessage());
+          }
+
+
 }
+
+}
+    
+   
+    
+    
+    
+    
+    
+    
+    
+  
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
