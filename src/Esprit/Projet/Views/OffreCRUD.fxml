@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -109,11 +108,6 @@
          </font>
       </Label>
       <Button fx:id="tfconsuleroffre" layoutX="541.0" layoutY="491.0" mnemonicParsing="false" styleClass="blue-btn" text="Consulter_Offre" />
-      <ImageView fx:id="excel" layoutX="294.0" layoutY="536.0">
-         <image>
-            <Image url="@../../../../../../../AppData/Local/Temp/icons8_microsoft_excel_50px.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="btexcel" layoutX="293.0" layoutY="491.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="293.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#PDF" text="PDF" />
    </children>
 </AnchorPane>

@@ -8,8 +8,17 @@ package Esprit.Projet.Controllers;
 import Esprit.Projet.Connexion.DbConnect;
 import Esprit.Projet.Connexion.MaConnexion;
 import Esprit.Projet.Entities.Offre;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,6 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -58,6 +68,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javax.swing.JOptionPane;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -119,8 +130,6 @@ public class OffreCRUDController implements Initializable {
     private TableColumn<Offre, String> editCol;
     @FXML
     private ImageView excel;
-    @FXML
-    private Button btexcel ;
     
     private FileInputStream fis;
     
@@ -164,53 +173,8 @@ public class OffreCRUDController implements Initializable {
     
     public void initialize(URL url, ResourceBundle rb) {
        
-        btexcel = new Button("Exporter une fichier excel");
         
-        btexcel.setOnAction( e->{
-           try {
-               String requete ="select * from offre";
-               ResultSet rs;
-               try (Statement st = cnxs.prepareStatement(requete)) {
-                   rs = st.executeQuery(requete);
-                   XSSFWorkbook wb = new XSSFWorkbook();
-                   XSSFSheet sheet = wb.createSheet("Offre information");
-                   XSSFRow header = sheet.createRow(0);
-                   header.createCell(1).setCellValue("ID Offre");
-                   header.createCell(2).setCellValue("Nom Offre");
-                   header.createCell(3).setCellValue("Date Debut Offre");
-                   header.createCell(4).setCellValue("Date Fin Offre");
-                   header.createCell(5).setCellValue("Description");
-                   header.createCell(6).setCellValue("Image");
-                   int index = 1;
-                   while (rs.next()) {
-                       XSSFRow row = sheet.createRow(index);
-                       row.createCell(0).setCellValue(rs.getString("id"));
-                       row.createCell(1).setCellValue(rs.getString("nomoffre"));
-                       row.createCell(2).setCellValue(rs.getString("datedebut"));
-                       row.createCell(3).setCellValue(rs.getString("datefin"));
-                       row.createCell(4).setCellValue(rs.getString("description"));
-                       row.createCell(5).setCellValue(rs.getString("imgsrc"));
-                       index++;
-                   }
-                   try (FileOutputStream fileout = new  FileOutputStream("Offreinformation.xlsx")) {
-                       wb.write(fileout);
-                   }
-                   Alert alert = new Alert(AlertType.INFORMATION);
-                   alert.setTitle("information");
-                   alert.setHeaderText(null);
-                   alert.setContentText("Le Fichier a ete exporter avec succes");
-                   alert.showAndWait();
-               }
-                 rs.close();
-           } catch(SQLException ex){
-               Logger.getLogger(TableViewController.class.getName()).log(Level.SEVERE, null, ex);
-               
-           } catch (FileNotFoundException ex) {
-                Logger.getLogger(OffreCRUDController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(OffreCRUDController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        
         
         tfconsuleroffre.setOnAction(event->{
             try {
@@ -411,7 +375,87 @@ void setTextField(int id, String nomoffre, LocalDate datedebut,LocalDate datefin
 
 
 
+    @FXML
+    private void PDF(MouseEvent event) throws SQLException, FileNotFoundException, IOException {    
+
+        try {
+       com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+       PdfWriter.getInstance(doc,new FileOutputStream("C:\\Users\\ahmed\\OneDrive\\Desktop\\Offre.pdf"));  
+       doc.open();
+       
+    doc.add(new Paragraph(" "));
+       
+       Paragraph p = new Paragraph("liste des Offres  ");
+       p.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       doc.add(p);
+       doc.add(new Paragraph(" "));
+       doc.add(new Paragraph(" "));
+
+       PdfPTable tabpdf = new PdfPTable(4);
+       tabpdf.setWidthPercentage(100);
+       
+       PdfPCell cell;
+       cell = new PdfPCell(new Phrase("Non_Offre"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       cell = new PdfPCell(new Phrase("Date_debut"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       cell = new PdfPCell(new Phrase("Date_Fin"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       cell = new PdfPCell(new Phrase("Description"));
+       cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+       cell.setBackgroundColor(BaseColor.WHITE);
+       tabpdf.addCell(cell);
+       
+       
+       
+       String requete = "SELECT * FROM offre";
+       Statement st = cnxs.createStatement();
+       ResultSet rs = st.executeQuery(requete);
+          
+      while (rs.next()) {
+           cell = new PdfPCell(new Phrase(rs.getString("nomoffre")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           
+           cell = new PdfPCell(new Phrase(rs.getString("datedebut")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           cell = new PdfPCell(new Phrase(rs.getString("datefin")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           cell = new PdfPCell(new Phrase(rs.getString("description")));
+           cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+           cell.setBackgroundColor(BaseColor.WHITE);
+           tabpdf.addCell(cell);
+           
+       }
+     
+   
+          doc.add(tabpdf);
+          JOptionPane.showMessageDialog(null, "Votre fichier a ete exporter avec succes");
+          doc.close();
+          Desktop.getDesktop().open(new File("C:\\Users\\ahmed\\OneDrive\\Desktop\\Offre.pdf"));
+       }
+ 
+        catch (DocumentException | HeadlessException e) {
+            System.out.println("ERROR PDF");
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            System.out.println(e.getMessage());
+          }
 
 
 
+}
 }
