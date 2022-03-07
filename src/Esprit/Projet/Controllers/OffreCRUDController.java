@@ -37,6 +37,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -134,7 +135,7 @@ public class OffreCRUDController implements Initializable {
     private FileInputStream fis;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void handleButtonAction(ActionEvent event) throws SQLException {
         
         if(event.getSource() == btninserrer ){
             ajouterOffre();
@@ -316,15 +317,38 @@ public void afficherOffre(){
 
 
        
-public void ajouterOffre(){
-        try {
-            String requete = "INSERT INTO OFFRE VALUES ( NULL ,'"+tfnom.getText()+ "','" + String.valueOf(tfdated.getValue()) + "','" +String.valueOf(tfdatef.getValue())+ "','" +tfdescription.getText()+ "','" +tfimg.getText()+ "','" +tfcouleur.getText()+ "')";
-        PreparedStatement pst = cnxs.prepareStatement(requete);
+public void ajouterOffre() throws SQLException{
+       
+            if (tfnom.getText().equals("") || tfdescription.getText().equals("")|| String.valueOf(tfdated.getValue()).equals("")|| String.valueOf(tfdatef.getValue()).equals("")|| tfcouleur.getText().equals("")|| tfimg.getText().equals(""))
+       {
+           JOptionPane.showMessageDialog(null, "Il faut remplir toutes les informations !");
+       }
+       else if(!( Pattern.matches("[a-zA-Z]*", tfnom.getText()))){
+           JOptionPane.showMessageDialog(null, "Titre doit etre de type String !");
+       }
+//        else if(String.valueOf(tfdated.getValue()).length()== String.valueOf(tfdatef.getValue()).length()){
+//           JOptionPane.showMessageDialog(null, "Date debut ne peut pas etre equivalent date fin");
+//       }
+        else if(String.valueOf(tfdated.getValue()).length()>= String.valueOf(tfdatef.getValue()).length()){
+           JOptionPane.showMessageDialog(null, "Date debut ne peut pas etre apres date fin ou le même jour");
+       }
+        
+       else{
+       
+            
+            String requete = "INSERT INTO OFFRE VALUES ( NULL ,'"
+                    +tfnom.getText()+ "','"
+                    + String.valueOf(tfdated.getValue()) + "','" 
+                    +String.valueOf(tfdatef.getValue())+ "','" 
+                    +tfdescription.getText()+ "','" +tfimg.getText()+ "','" 
+                    +tfcouleur.getText()+ "')";
+       
+            
+            
+            PreparedStatement pst = cnxs.prepareStatement(requete);
           pst.executeUpdate();
             System.out.println("votre offre est ajoutée avec succees ");
-                } catch (SQLException ex) {
-                      System.err.println(ex.getMessage());
-        }
+                } 
         afficherOffre();
     }
 
